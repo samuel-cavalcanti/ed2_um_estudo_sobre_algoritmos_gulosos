@@ -32,8 +32,8 @@ activitySet greedyActivitySelector(timeSet startTime, timeSet finishTime) {
 
     auto setSize = startTime.size();
     activitySet largeSubSet{{startTime[0], finishTime[0]}}; // A = {a1}
-    auto k{1};
-    for (auto m = 2; m < setSize; m++) {
+    auto k{0};
+    for (auto m = 1; m < setSize; m++) {
         if (startTime[m] >= finishTime[k]) {
             largeSubSet.push_back({startTime[m], finishTime[m]});
             k = m;

@@ -57,13 +57,16 @@ a escolha gulosa é a atividade a1.
 
 ### algoritmo greedy Activity Selector
 ```c++
-activitySet greedyActivitySelector(timeSet startTime, timeSet finishTime) {
+typedef std::vector<std::vector<int>> activitySet;
+typedef std::vector<int> timeSet;
+
+activitySet greedyActivitySelector(timeSet startTime, timeSet finishTime) { 
     auto setSize = startTime.size();
-    activitySet largeSubSet{{startTime[0], finishTime[0]}}; // A = {a1}
-    auto k{1};
-    for (auto m = 2; m < setSize; m++) {
+    activitySet largeSubSet{{startTime[0], finishTime[0]}}; // largeSubSet = {a1}
+    auto k{0};
+    for (auto m = 1; m < setSize; m++) {
         if (startTime[m] >= finishTime[k]) { // escolha gulosa
-            largeSubSet.push_back({startTime[m], finishTime[m]});
+            largeSubSet.push_back({startTime[m], finishTime[m]}); // largeSubSet = {...,a_m}
             k = m;
         }
 
@@ -71,6 +74,15 @@ activitySet greedyActivitySelector(timeSet startTime, timeSet finishTime) {
     return largeSubSet;
 }
 ```
+O procedimento funciona da maneira descrita a seguir. A variável k indexa a adição mais recente a largeSubSet.
+Visto que consideramos as atividades em ordem monotonicamente crescente de tempos de término,
+finishTime[k] é sempre o tempo de término máximo de qualquer atividade em A.
+As linhas 3–4 selecionam a atividade a1 = {startTime[0], finishTime[0]},
+inicializam largeSubSet para conter apenas essa atividade e inicializam k para indexar essa
+atividade. O laço __for__ encontra a atividade que termina mais cedo em S_k. O laço considera cada atividade
+a_m ={startTime[m], finishTime[m]} por vez e acrescenta am a largeSubSet se ela for compatível com todas as
+atividades selecionadas anteriormente; tal atividade é a que termina mais cedo S_k. Se a atividade a_m é compatível,
+as linhas 6–7 adicionam a atividade a_m a largeSubSet e atribue k com m.
 
 ### Informações importantes caso queiremos a solução ótima
 
